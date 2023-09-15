@@ -1,6 +1,7 @@
 import React, { Component, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+
 export default function Login() {
   const MyContext = React.createContext();
   const [email, setEmail] = useState("");
@@ -10,27 +11,17 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(
-        "auth/login",
-        {
-          email,
-          password,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-        }
-      );
-      console.log(response.data.data.token);
+      const response = await axios.post("/auth/login", {
+        email,
+        password,
+      });
+
       if (response.data.success === true) {
         alert("login successful");
 
-        window.localStorage.setItem("token", response.data.data.token);
+        window.localStorage.setItem("token", response.data.token);
         window.localStorage.setItem("loggedIn", true);
-        //window.localStorage.setItem("email", response.data.data.email);
-        navigate(`/user`);
+        navigate("/user");
       }
     } catch (error) {
       console.error(error);
